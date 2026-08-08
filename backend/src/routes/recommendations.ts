@@ -22,7 +22,7 @@ recommendationsRouter.get('/', optionalAuth, async (req: AuthRequest, res: Respo
       },
     });
 
-    const recommendations = vehicles.map((vehicle, index) => {
+    const recommendations = vehicles.map((vehicle: any, index: number) => {
       const occupancyPred = vehicle.occupancyPredictions[0];
       const occupancyPercentage = occupancyPred?.occupancyPercentage || 50;
       const seatProbability = occupancyPred?.seatProbability || 0.5;
@@ -58,10 +58,10 @@ recommendationsRouter.get('/', optionalAuth, async (req: AuthRequest, res: Respo
     });
 
     // Sort by score descending
-    recommendations.sort((a, b) => b.score - a.score);
+    recommendations.sort((a: any, b: any) => b.score - a.score);
 
     // Add reasons
-    const withReasons = recommendations.map((rec, i) => ({
+    const withReasons = recommendations.map((rec: any, i: number) => ({
       ...rec,
       isAiRecommended: i === 0 && rec.score >= 60,
       reason: generateRecommendationReason(

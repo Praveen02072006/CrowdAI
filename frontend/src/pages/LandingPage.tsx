@@ -33,10 +33,7 @@ export default function LandingPage() {
         <div className="absolute top-40 left-1/4 w-[300px] h-[200px] bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-5xl mx-auto text-center relative">
-          <div className="inline-flex items-center gap-2 bg-brand-600/10 border border-brand-500/20 rounded-full px-4 py-2 text-sm text-brand-400 mb-8 animate-fade-in">
-            <span className="w-2 h-2 bg-brand-400 rounded-full animate-pulse" />
-            Hack Fusion '26 — Demo Transport Network
-          </div>
+
 
           <h1 className="text-5xl sm:text-7xl font-black tracking-tight mb-6 animate-slide-up">
             <span className="text-white">Know the Crowd</span>

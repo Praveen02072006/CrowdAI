@@ -14,7 +14,7 @@ notificationsRouter.get('/', async (req: AuthRequest, res: Response): Promise<vo
       orderBy: { createdAt: 'desc' },
       take: 50,
     });
-    const unreadCount = notifications.filter(n => !n.read).length;
+    const unreadCount = notifications.filter((n: any) => !n.read).length;
     res.json({ success: true, data: { notifications, unreadCount } });
   } catch {
     res.status(500).json({ success: false, message: 'Failed to fetch notifications.' });

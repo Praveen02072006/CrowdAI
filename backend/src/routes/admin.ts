@@ -62,12 +62,12 @@ adminRouter.get('/metrics', async (_req, res: Response): Promise<void> => {
       },
     });
 
-    const routeAnalysis = routeDemand.map(route => ({
+    const routeAnalysis = routeDemand.map((route: any) => ({
       routeName: route.name,
       source: route.source,
       destination: route.destination,
       avgOccupancy: Math.round(
-        route.vehicles.reduce((s, v) => s + (v.occupancyPredictions[0]?.occupancyPercentage || 0), 0)
+        route.vehicles.reduce((s: number, v: any) => s + (v.occupancyPredictions[0]?.occupancyPercentage || 0), 0)
         / Math.max(route.vehicles.length, 1)
       ),
     }));

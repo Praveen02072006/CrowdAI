@@ -54,7 +54,7 @@ function startVehicleMovementEngine(io: Server): void {
         // Find nearest stop and move toward next one
         let nearestIdx = 0;
         let minDist = Infinity;
-        stops.forEach((stop, i) => {
+        stops.forEach((stop: any, i: number) => {
           const d = Math.sqrt(Math.pow(stop.latitude - currentLat, 2) + Math.pow(stop.longitude - currentLng, 2));
           if (d < minDist) { minDist = d; nearestIdx = i; }
         });

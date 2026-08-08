@@ -40,20 +40,20 @@ operatorRouter.get('/dashboard', async (_req, res: Response): Promise<void> => {
 
     const fleetStats = {
       total: vehicles.length,
-      normal: vehicles.filter(v => (v.occupancyPredictions[0]?.occupancyPercentage || 0) < 70).length,
-      moderate: vehicles.filter(v => {
+      normal: vehicles.filter((v: any) => (v.occupancyPredictions[0]?.occupancyPercentage || 0) < 70).length,
+      moderate: vehicles.filter((v: any) => {
         const o = v.occupancyPredictions[0]?.occupancyPercentage || 0;
         return o >= 70 && o < 85;
       }).length,
-      crowded: vehicles.filter(v => {
+      crowded: vehicles.filter((v: any) => {
         const o = v.occupancyPredictions[0]?.occupancyPercentage || 0;
         return o >= 85 && o < 95;
       }).length,
-      overcapacity: vehicles.filter(v => (v.occupancyPredictions[0]?.occupancyPercentage || 0) >= 95).length,
+      overcapacity: vehicles.filter((v: any) => (v.occupancyPredictions[0]?.occupancyPercentage || 0) >= 95).length,
     };
 
-    const routeDemand = routeStats.map(route => {
-      const avgOccupancy = route.vehicles.reduce((sum, v) => {
+    const routeDemand = routeStats.map((route: any) => {
+      const avgOccupancy = route.vehicles.reduce((sum: number, v: any) => {
         return sum + (v.occupancyPredictions[0]?.occupancyPercentage || 0);
       }, 0) / Math.max(route.vehicles.length, 1);
       return {
@@ -156,7 +156,7 @@ operatorRouter.post('/deploy', async (req: AuthRequest, res: Response): Promise<
       // Resolve overcrowding alerts for this route
       await prisma.alert.updateMany({
         where: {
-          vehicleId: { in: vehicles.map(v => v.id) },
+          vehicleId: { in: vehicles.map((v: any) => v.id) },
           type: { in: ['OVERCROWDING', 'CROWD_SURGE'] },
           status: 'ACTIVE',
         },
