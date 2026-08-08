@@ -235,6 +235,12 @@ async function main() {
       },
     });
 
+    // Clear old time-series data to ensure idempotency
+    await prisma.vehicleLocation.deleteMany({ where: { vehicleId: v.id } });
+    await prisma.deviceObservation.deleteMany({ where: { vehicleId: v.id } });
+    await prisma.occupancyPrediction.deleteMany({ where: { vehicleId: v.id } });
+    await prisma.crowdPrediction.deleteMany({ where: { vehicleId: v.id } });
+
     // Create initial location
     await prisma.vehicleLocation.create({
       data: {
@@ -295,6 +301,8 @@ async function main() {
   console.log('✅ Vehicles, locations, device observations, and predictions created');
 
   // ─── ALERTS ──────────────────────────────────────────────────────────────────
+  await prisma.alert.deleteMany({ where: { vehicleId: { in: ['vehicle-21g-1', 'vehicle-45x-1'] } } });
+
   await prisma.alert.create({
     data: {
       vehicleId: 'vehicle-21g-1',
@@ -318,6 +326,8 @@ async function main() {
   console.log('✅ Alerts created');
 
   // ─── NOTIFICATIONS ───────────────────────────────────────────────────────────
+  await prisma.notification.deleteMany({ where: { userId: { in: [passenger.id, operator.id] } } });
+
   await prisma.notification.createMany({
     data: [
       {
