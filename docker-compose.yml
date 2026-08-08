@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: crowdsense_postgres
+    environment:
+      POSTGRES_USER: crowdsense
+      POSTGRES_PASSWORD: crowdsense_secret
+      POSTGRES_DB: crowdsense_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crowdsense -d crowdsense_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: crowdsense_backend
+    environment:
+      DATABASE_URL: postgresql://crowdsense:crowdsense_secret@postgres:5432/crowdsense_db
+      JWT_SECRET: hackfusion26_jwt_secret_crowdsense_ai
+      AI_SERVICE_URL: http://ai-service:8001
+      CLIENT_URL: http://localhost:5173
+      PORT: 3001
+      NODE_ENV: production
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: crowdsense_ai
+    ports:
+      - "8001:8001"
+    volumes:
+      - ai_models:/app/models
+
+volumes:
+  postgres_data:
+  ai_models:

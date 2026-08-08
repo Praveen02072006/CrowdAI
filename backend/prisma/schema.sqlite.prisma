@@ -1,0 +1,203 @@
+// SQLite Fallback Schema for CrowdSense AI (Zero-dependency local execution)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("PASSENGER") // PASSENGER, DRIVER, OPERATOR, ADMIN
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  recommendations Recommendation[]
+  notifications   Notification[]
+  adminActions    AdminAction[]
+
+  @@map("users")
+}
+
+model Route {
+  id          String   @id @default(cuid())
+  name        String
+  source      String
+  destination String
+  color       String   @default("#3B82F6")
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  stops    Stop[]
+  vehicles Vehicle[]
+
+  @@map("routes")
+}
+
+model Stop {
+  id        String   @id @default(cuid())
+  routeId   String
+  name      String
+  latitude  Float
+  longitude Float
+  sequence  Int
+  createdAt DateTime @default(now())
+
+  route Route @relation(fields: [routeId], references: [id], onDelete: Cascade)
+
+  @@map("stops")
+}
+
+model Vehicle {
+  id            String   @id @default(cuid())
+  routeId       String
+  vehicleNumber String   @unique
+  capacity      Int      @default(60)
+  status        String   @default("ACTIVE") // ACTIVE, INACTIVE, MAINTENANCE, DEPLOYED
+  driverName    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  route                Route                 @relation(fields: [routeId], references: [id])
+  locations            VehicleLocation[]
+  deviceObservations   DeviceObservation[]
+  occupancyPredictions OccupancyPrediction[]
+  crowdPredictions     CrowdPrediction[]
+  recommendations      Recommendation[]
+  alerts               Alert[]
+
+  @@map("vehicles")
+}
+
+model VehicleLocation {
+  id        String   @id @default(cuid())
+  vehicleId String
+  latitude  Float
+  longitude Float
+  speed     Float    @default(0)
+  heading   Float    @default(0)
+  timestamp DateTime @default(now())
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("vehicle_locations")
+}
+
+model DeviceObservation {
+  id                   String   @id @default(cuid())
+  vehicleId            String
+  anonymousDeviceCount Int
+  boardingCount        Int      @default(0)
+  exitCount            Int      @default(0)
+  source               String   @default("SIMULATOR")
+  timestamp            DateTime @default(now())
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("device_observations")
+}
+
+model OccupancyPrediction {
+  id                  String   @id @default(cuid())
+  vehicleId           String
+  estimatedPassengers Int
+  occupancyPercentage Float
+  confidence          Float
+  crowdLevel          String   // LOW, MODERATE, CROWDED, OVERLOADED
+  seatProbability     Float    @default(0)
+  timestamp           DateTime @default(now())
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("occupancy_predictions")
+}
+
+model CrowdPrediction {
+  id                 String   @id @default(cuid())
+  vehicleId          String
+  horizonMinutes     Int
+  predictedOccupancy Float
+  confidence         Float
+  crowdLevel         String   // LOW, MODERATE, CROWDED, OVERLOADED
+  timestamp          DateTime @default(now())
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("crowd_predictions")
+}
+
+model Recommendation {
+  id              String   @id @default(cuid())
+  userId          String
+  vehicleId       String
+  score           Float
+  waitingTime     Int
+  crowdLevel      String
+  seatProbability Float
+  travelTime      Int
+  reason          String
+  isAiRecommended Boolean  @default(false)
+  timestamp       DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("recommendations")
+}
+
+model Alert {
+  id        String   @id @default(cuid())
+  vehicleId String
+  type      String   // OVERCROWDING, CAPACITY_WARNING, RETAIL_SURGE, etc.
+  severity  String   // LOW, MEDIUM, HIGH, CRITICAL
+  message   String
+  metadata  String?  // JSON string
+  status    String   @default("ACTIVE") // ACTIVE, RESOLVED, ACKNOWLEDGED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("alerts")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      String   @default("INFO")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model AdminAction {
+  id        String   @id @default(cuid())
+  adminId   String
+  action    String
+  metadata  String?
+  createdAt DateTime @default(now())
+
+  admin User @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@map("admin_actions")
+}
+
+model SystemConfig {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("system_configs")
+}
