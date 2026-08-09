@@ -273,7 +273,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
           <div className="flex items-center gap-2">
             <Bus className="w-4 h-4 text-brand-500" />
-            <span className="font-medium text-slate-300">CrowdSense AI</span>
+            <span className="font-medium text-slate-300">Yatra IQ</span>
             <span>— Hack Fusion '26</span>
           </div>
           <div className="flex gap-6">

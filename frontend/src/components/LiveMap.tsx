@@ -41,7 +41,7 @@ export default function LiveMap({ vehicles, height = '400px', selectedVehicleId,
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors | CrowdSense AI',
+      attribution: '&copy; OpenStreetMap contributors | Yatra IQ',
     }).addTo(map);
 
     mapRef.current = map;

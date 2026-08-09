@@ -1,7 +1,7 @@
 {
-  "name": "crowdsense-ai",
+  "name": "yatra-iq",
   "version": "1.0.0",
-  "description": "CrowdSense AI - Know the crowd before you board",
+  "description": "Yatra IQ - Know the crowd before you board",
   "private": true,
   "workspaces": [
     "frontend",

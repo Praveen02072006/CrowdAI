@@ -1,7 +1,7 @@
 {
-  "name": "crowdsense-backend",
+  "name": "yatra-iq-backend",
   "version": "1.0.0",
-  "description": "CrowdSense AI Backend - Express + Prisma + Socket.IO",
+  "description": "Yatra IQ Backend - Express + Prisma + Socket.IO",
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",

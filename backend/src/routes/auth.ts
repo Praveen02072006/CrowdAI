@@ -83,7 +83,7 @@ authRouter.post('/register', async (req: Request, res: Response): Promise<void> 
     await prisma.notification.create({
       data: {
         userId: user.id,
-        title: 'Welcome to CrowdSense AI!',
+        title: 'Welcome to Yatra IQ!',
         message: 'Search for your destination to get AI-powered crowd predictions and smart route recommendations.',
         type: 'INFO',
       },

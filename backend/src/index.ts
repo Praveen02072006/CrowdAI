@@ -84,7 +84,7 @@ app.use('/api/notifications', notificationsRouter);
 app.get('/health', async (_req, res) => {
   try {
     await prisma.$queryRaw`SELECT 1`;
-    res.json({ success: true, message: 'CrowdSense AI Backend is running', timestamp: new Date().toISOString() });
+    res.json({ success: true, message: 'Yatra IQ Backend is running', timestamp: new Date().toISOString() });
   } catch {
     res.status(503).json({ success: false, message: 'Database unavailable' });
   }
@@ -93,7 +93,7 @@ app.get('/health', async (_req, res) => {
 app.get('/api', (_req, res) => {
   res.json({
     success: true,
-    message: 'CrowdSense AI API',
+    message: 'Yatra IQ API',
     version: '1.0.0',
     tagline: 'Know the crowd before you board.',
   });
@@ -110,7 +110,7 @@ app.use(errorHandler);
 // ─── Start Server ─────────────────────────────────────────────────────────────
 const PORT = parseInt(process.env.PORT || '3001', 10);
 server.listen(PORT, () => {
-  console.log(`\n🚀 CrowdSense AI Backend running on port ${PORT}`);
+  console.log(`\n🚀 Yatra IQ Backend running on port ${PORT}`);
   console.log(`📡 Socket.IO ready`);
   console.log(`🔗 Health check: http://localhost:${PORT}/health\n`);
 });

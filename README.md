@@ -1,8 +1,8 @@
-# CrowdSense AI — "Know the crowd before you board."
+# Yatra IQ — "Know the crowd before you board."
 
 > **Hack Fusion '26 Production-Quality Prototype**
 
-CrowdSense AI is a privacy-preserving, AI-powered public transport crowd prediction and smart route recommendation system. It processes anonymous device presence telemetry to predict future passenger density, recommend optimal comfortable journeys for commuters, and enable transport operators to proactively deploy capacity before overcrowding occurs.
+Yatra IQ is a privacy-preserving, AI-powered public transport crowd prediction and smart route recommendation system. It processes anonymous device presence telemetry to predict future passenger density, recommend optimal comfortable journeys for commuters, and enable transport operators to proactively deploy capacity before overcrowding occurs.
 
 ---
 

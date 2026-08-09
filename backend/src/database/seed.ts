@@ -10,7 +10,7 @@ const AlertSeverity = { LOW: 'LOW', MEDIUM: 'MEDIUM', HIGH: 'HIGH', CRITICAL: 'C
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Seeding CrowdSense AI database...');
+  console.log('🌱 Seeding Yatra IQ database...');
 
   // ─── USERS ──────────────────────────────────────────────────────────────────
   const passwordHash = await bcrypt.hash('Demo@2026', 10);
@@ -332,7 +332,7 @@ async function main() {
     data: [
       {
         userId: passenger.id,
-        title: 'Welcome to CrowdSense AI!',
+        title: 'Welcome to Yatra IQ!',
         message: 'Search for your destination to get AI-powered crowd predictions and smart route recommendations.',
         type: 'INFO',
       },
