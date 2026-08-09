@@ -3,7 +3,6 @@
 > *"Know the crowd before you board."*
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://crowd-ai-frontend-eta.vercel.app/)
-[![Backend API](https://img.shields.io/badge/Backend%20API-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://crowdai-pdki.onrender.com/health)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
@@ -14,12 +13,11 @@ Yatra IQ is an AI-powered, privacy-preserving public transport crowd prediction 
 
 ---
 
-## 🌐 Live Production Links
+## 🌐 Live Production Link
 
 | Resource | URL | Status |
 |---|---|---|
 | **Web Application (Vercel)** | [https://crowd-ai-frontend-eta.vercel.app/](https://crowd-ai-frontend-eta.vercel.app/) | ![Online](https://img.shields.io/badge/Status-Online-brightgreen) |
-| **Backend API (Render)** | [https://crowdai-pdki.onrender.com/health](https://crowdai-pdki.onrender.com/health) | ![Online](https://img.shields.io/badge/Status-Online-brightgreen) |
 
 ---
 
