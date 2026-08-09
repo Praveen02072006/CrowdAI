@@ -1,85 +1,132 @@
-# Yatra IQ — "Know the crowd before you board."
+# 🚌 Yatra IQ — Smart Transit Crowd Analytics & Prediction
 
-> **Hack Fusion '26 Production-Quality Prototype**
+> *"Know the crowd before you board."*
 
-Yatra IQ is a privacy-preserving, AI-powered public transport crowd prediction and smart route recommendation system. It processes anonymous device presence telemetry to predict future passenger density, recommend optimal comfortable journeys for commuters, and enable transport operators to proactively deploy capacity before overcrowding occurs.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://crowd-ai-frontend-eta.vercel.app/)
+[![Backend API](https://img.shields.io/badge/Backend%20API-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://crowdai-pdki.onrender.com/health)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
----
-
-## 1. Problem Statement
-
-Commuters board public transit blindly — without knowing passenger density, crowd surges, or seat availability. Meanwhile, transport operators react to overcrowding *after* it happens rather than pre-empting it. Traditional camera surveillance raises severe privacy concerns, while personal GPS tracking incurs high battery and privacy costs.
-
-## 2. Solution & Core Innovation
-
-CrowdSense AI bridges this gap through a non-visual, privacy-by-design pipeline:
-
-```
-Anonymous Device Telemetry → AI Calibration → Passenger Occupancy → CrowdPredict (5/10/15m) → SmartRoute → FleetAI
-```
-
-1. **DeviceSense™:** Camera-free anonymous device-presence detection.
-2. **CrowdPredict™:** 5, 10, and 15-minute future crowd forecasting using XGBoost / Random Forest.
-3. **SmartRoute™:** Multi-factor Travel Score algorithm recommending comfortable travel options.
-4. **FleetAI™:** Real-time overcrowding alerts and operator capacity deployment.
-5. **Privacy by Design:** Zero personal identities, names, phone numbers, or device contents collected.
+Yatra IQ is an AI-powered, privacy-preserving public transport crowd prediction and smart route recommendation platform. It analyzes non-visual device telemetry to predict future passenger density, recommend comfortable travel options for commuters, and empower transport operators to dynamically deploy fleet capacity before overcrowding occurs.
 
 ---
 
-## 3. Technology Stack
+## 🌐 Live Production Links
 
-- **Frontend:** React 18, Vite, TypeScript, Tailwind CSS, TanStack Query, Leaflet / React Leaflet, Recharts, Lucide React, Socket.IO Client.
-- **Backend:** Node.js, Express, TypeScript, Prisma ORM, PostgreSQL, Socket.IO, JWT, Zod.
-- **AI Service:** Python 3.11, FastAPI, pandas, numpy, scikit-learn, XGBoost / RandomForest, joblib.
-- **Simulator:** Node.js / TypeScript configurable telemetry engine.
-- **DevOps:** Docker Compose, Concurrently.
-
----
-
-## 4. Demo Credentials
-
-| Role | Email | Password |
+| Resource | URL | Status |
 |---|---|---|
-| **Passenger** | `passenger@crowdsense.demo` | `Demo@2026` |
-| **Operator** | `operator@crowdsense.demo` | `Demo@2026` |
-| **Admin** | `admin@crowdsense.demo` | `Demo@2026` |
+| **Web Application (Vercel)** | [https://crowd-ai-frontend-eta.vercel.app/](https://crowd-ai-frontend-eta.vercel.app/) | ![Online](https://img.shields.io/badge/Status-Online-brightgreen) |
+| **Backend API (Render)** | [https://crowdai-pdki.onrender.com/health](https://crowdai-pdki.onrender.com/health) | ![Online](https://img.shields.io/badge/Status-Online-brightgreen) |
 
 ---
 
-## 5. Quick Start (Running Locally)
+## 🔑 Quick Demo Credentials
+
+Test the platform instantly with pre-configured role-based accounts:
+
+| Role | Email | Password | Access Level |
+|---|---|---|---|
+| 👤 **Passenger** | `passenger@crowdsense.demo` | `Demo@2026` | Commuter travel search, occupancy view & SmartRoute recommendations |
+| 🚍 **Operator** | `operator@crowdsense.demo` | `Demo@2026` | Real-time fleet monitor, overcrowding alerts & capacity deployment |
+| 🛡️ **Admin** | `admin@crowdsense.demo` | `Demo@2026` | Full platform metrics, AI configuration & system telemetry |
+
+*Tip: You can also use the **Quick Demo Access** buttons directly on the Sign In page.*
+
+---
+
+## ⚡ Key Features
+
+* **DeviceSense™ (Privacy-First Density Estimation):** Camera-free, non-visual device presence analytics. Zero facial recognition, zero identity tracking, zero personal data stored.
+* **CrowdPredict™ (ML Forecasting Engine):** 5, 10, and 15-minute predictive passenger density forecasting using trained Machine Learning models (XGBoost / Random Forest).
+* **SmartRoute™ (Comfort-Based Routing):** Multi-factor Travel Score algorithm evaluating predicted crowd level, seat probability, wait times, and travel duration.
+* **FleetAI™ (Operator Command Center):** Real-time fleet management dashboard with automated overcrowding alerts and 1-click capacity dispatch.
+* **Interactive Live Map:** Real-time vehicle location tracking with live occupancy badges and route overlays.
+* **Real-time WebSockets:** Powered by Socket.IO for instant telemetry updates and live alert push notifications.
+* **8-Phase Telemetry Simulator:** Built-in interactive presentation mode for live hackathon demonstrations.
+
+---
+
+## 🏗️ System Architecture
+
+```
+┌─────────────────────────┐       Socket.IO / REST       ┌──────────────────────────┐
+│  React 18 + Vite SPA    │ ◄──────────────────────────► │  Node.js + Express API   │
+│  (Deployed on Vercel)   │                              │   (Deployed on Render)   │
+└─────────────────────────┘                              └────────────┬─────────────┘
+                                                                      │
+                                                     ┌────────────────┴─────────────┐
+                                                     │                              │
+                                                     ▼                              ▼
+                                          ┌────────────────────┐         ┌────────────────────┐
+                                          │ Neon PostgreSQL    │         │ Python AI Engine   │
+                                          │  (Prisma ORM)      │         │ (FastAPI / XGBoost)│
+                                          └────────────────────┘         └────────────────────┘
+```
+
+### Data Pipeline
+```
+Anonymous Telemetry  ──►  DeviceSense Calibration  ──►  Occupancy Calculation  ──►  CrowdPredict Forecast (5/10/15m)  ──►  SmartRoute & FleetAI Dispatch
+```
+
+---
+
+## 🛠️ Technology Stack
+
+### **Frontend**
+* **Framework:** React 18, Vite, TypeScript
+* **Styling:** Tailwind CSS, Lucide React Icons
+* **State & Data Fetching:** TanStack React Query, Axios
+* **Maps & Visualizations:** Leaflet, React Leaflet, Recharts
+* **Real-Time:** Socket.IO Client
+
+### **Backend**
+* **Runtime:** Node.js, Express, TypeScript
+* **Database & ORM:** PostgreSQL (Neon Cloud), Prisma ORM
+* **Real-Time & Auth:** Socket.IO, JWT Authentication, Zod Validation
+
+### **AI & Simulation**
+* **AI Engine:** Python 3.11, FastAPI, pandas, numpy, scikit-learn, XGBoost
+* **Simulator:** Node.js / TypeScript automated telemetry generator
+
+---
+
+## 🚀 Local Development Setup
 
 ### Prerequisites
-- Node.js 18+ and `npm`
-- PostgreSQL (or Docker Desktop)
-- Python 3.8+ (optional, fallback AI engine included in Node.js backend)
+* **Node.js:** v18.0.0 or higher
+* **npm:** v9.0.0 or higher
 
-### Step 1: Install Dependencies
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Praveen02072006/CrowdAI.git
+cd CrowdAI
+```
+
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### Step 2: Configure Environment
-Copy `.env.example` to backend `.env`:
+### 3. Setup Local Database (SQLite Fallback)
 ```bash
-cp .env.example backend/.env
+npm run db:use:sqlite --workspace=backend
 ```
+*(This initializes and seeds the local `dev.db` database automatically).*
 
-### Step 3: Initialize Database & Seed Data
-```bash
-npm run db:migrate
-npm run db:seed
-```
-
-### Step 4: Run Application
+### 4. Start Development Servers
 ```bash
 npm run dev
 ```
-This starts:
-- Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:3001`
-- Simulator Engine: background service
 
-*(Optional)* Start Python AI Service in another terminal:
+This concurrently starts:
+* 📱 **Frontend:** `http://localhost:5173`
+* ⚙️ **Backend API:** `http://localhost:3001`
+* 📡 **Telemetry Simulator:** Active background service
+
+*(Optional)* Start the Python AI service in a separate terminal:
 ```bash
 npm run install:ai
 npm run dev:ai
@@ -87,21 +134,28 @@ npm run dev:ai
 
 ---
 
-## 6. Hackathon Demo Mode
+## 🎭 Hackathon Demo Mode
 
-Navigate to `/simulator` in the application UI or click **"Try Live Demo"**.
-Click **"START DEMO MODE"** to execute an automated 8-phase live presentation sequence demonstrating:
-1. Normal baseline (48% occupancy)
-2. Rising passenger count (65%)
-3. Crowd surge (82%)
-4. AI prediction of 92%+ overcrowding in 10 minutes
-5. Automated critical overcrowding alert
-6. Operator deploying additional fleet capacity
-7. Passenger redistribution (71%)
-8. System stabilization & SmartRoute recommendation update
+1. Open the web app and navigate to `/simulator` (or click **"Device Simulator"** in the navigation header).
+2. Click **"START DEMO MODE"**.
+3. Watch the automated 8-phase live simulation sequence:
+   1. **Phase 1: Baseline** (48% occupancy - LOW crowd)
+   2. **Phase 2: Passenger Arrival** (65% occupancy - MODERATE)
+   3. **Phase 3: Crowd Surge** (82% occupancy - CROWDED)
+   4. **Phase 4: AI Prediction** (Forecasting >90% OVERLOADED in 10 minutes)
+   5. **Phase 5: Automated Alert** (Operator notified of overcrowding)
+   6. **Phase 6: Capacity Deployment** (Operator dispatches additional vehicle)
+   7. **Phase 7: Passenger Load Re-balancing** (Occupancy drops to 71%)
+   8. **Phase 8: System Stabilization** (SmartRoute score recovers)
 
 ---
 
-## 7. Mandatory Technical & Privacy Disclaimer
+## 🛡️ Privacy & Technical Disclaimer
 
-> **The hackathon prototype uses simulated/controlled device telemetry. Real-world deployment would require appropriate operator-controlled sensing infrastructure, platform compatibility, privacy safeguards, and applicable permissions.**
+> **Yatra IQ is designed with Privacy-by-Design principles.** The system relies on non-visual device count telemetry and does not collect, track, or store personal identities, MAC addresses, names, phone numbers, or device contents. The hackathon prototype uses controlled simulated device telemetry for demonstration purposes.
+
+---
+
+<p center="align">
+  <b>Built for Hack Fusion '26</b> • Designed & Developed by Team Yatra IQ
+</p>
