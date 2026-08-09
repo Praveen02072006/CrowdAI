@@ -49,17 +49,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const res = await api.post('/auth/login', { email, password });
-    const { token: t, user: u } = res.data.data;
-    localStorage.setItem('cs_token', t);
-    localStorage.setItem('cs_user', JSON.stringify(u));
-    setToken(t);
-    setUser(u);
+    console.log('AuthContext: login function called with email:', email);
+    try {
+      console.log('AuthContext: calling api.post("/auth/login")');
+      const res = await api.post('/auth/login', { email, password });
+      console.log('AuthContext: api.post response received:', res.status, res.data);
+      const { token: t, user: u } = res.data.data;
+      localStorage.setItem('cs_token', t);
+      localStorage.setItem('cs_user', JSON.stringify(u));
+      setToken(t);
+      setUser(u);
 
-    const socket = getSocket();
-    socket.emit('join:user', u.id);
-    if (u.role === 'OPERATOR' || u.role === 'ADMIN') {
-      socket.emit('join:operator');
+      const socket = getSocket();
+      socket.emit('join:user', u.id);
+      if (u.role === 'OPERATOR' || u.role === 'ADMIN') {
+        socket.emit('join:operator');
+      }
+    } catch (apiErr) {
+      console.error('AuthContext: api.post threw an error:', apiErr);
+      throw apiErr;
     }
   }, []);
 

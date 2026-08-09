@@ -14,15 +14,20 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('LoginPage: Form submitted');
     setError('');
     setLoading(true);
     try {
+      console.log('LoginPage: Calling login() with', email);
       await login(email, password);
+      console.log('LoginPage: Login successful, navigating to /dashboard');
       navigate('/dashboard');
     } catch (err: unknown) {
+      console.error('LoginPage: Login caught error:', err);
       const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Login failed. Please check your credentials.';
       setError(msg);
     } finally {
+      console.log('LoginPage: Flow complete, setting loading to false');
       setLoading(false);
     }
   };
