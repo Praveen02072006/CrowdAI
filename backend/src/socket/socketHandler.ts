@@ -87,15 +87,13 @@ function startVehicleMovementEngine(io: Server): void {
         const newLat = currentLat + (target.latitude - currentLat) * 0.1;
         const newLng = currentLng + (target.longitude - currentLng) * 0.1;
         const speed = 20 + Math.random() * 20;
+        const heading = Math.atan2(target.longitude - currentLng, target.latitude - currentLat) * (180 / Math.PI);
 
-        await prisma.vehicleLocation.create({
-          data: {
-            vehicleId: vehicle.id,
-            latitude: newLat,
-            longitude: newLng,
-            speed,
-            heading: Math.atan2(target.longitude - currentLng, target.latitude - currentLat) * (180 / Math.PI),
-          },
+        // ── Update the existing location row instead of inserting a new one ──
+        // This avoids flooding the DB with a new row every 10 seconds per vehicle
+        await prisma.vehicleLocation.update({
+          where: { id: currentLoc.id },
+          data: { latitude: newLat, longitude: newLng, speed, heading, timestamp: new Date() },
         });
 
         io.emit('vehicle:location', {
@@ -121,6 +119,6 @@ function startVehicleMovementEngine(io: Server): void {
     }
   }
 
-  // Broadcast vehicle positions every 5 seconds
-  setInterval(tick, 5000);
+  // Broadcast vehicle positions every 10 seconds (was 5s — reduces DB load by 50%)
+  setInterval(tick, 10_000);
 }

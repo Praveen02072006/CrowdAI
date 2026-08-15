@@ -11,7 +11,12 @@ declare global {
 function createPrismaClient() {
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    // Supabase requires SSL in ALL environments (dev + prod)
+    ssl: { rejectUnauthorized: false },
+    // Cap pool size to avoid exhausting Supabase free-tier (20 conn limit)
+    max: 5,
+    idleTimeoutMillis: 30_000,
+    connectionTimeoutMillis: 10_000,
   });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({
