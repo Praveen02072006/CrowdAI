@@ -1,4 +1,7 @@
+import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 import bcrypt from 'bcryptjs';
 
 const Role = { PASSENGER: 'PASSENGER', DRIVER: 'DRIVER', OPERATOR: 'OPERATOR', ADMIN: 'ADMIN' } as const;
@@ -7,7 +10,10 @@ const CrowdLevel = { LOW: 'LOW', MODERATE: 'MODERATE', CROWDED: 'CROWDED', OVERL
 const AlertType = { OVERCROWDING: 'OVERCROWDING', CAPACITY_WARNING: 'CAPACITY_WARNING', ROUTE_DELAY: 'ROUTE_DELAY', VEHICLE_BREAKDOWN: 'VEHICLE_BREAKDOWN', CROWD_SURGE: 'CROWD_SURGE', CAPACITY_DEPLOYED: 'CAPACITY_DEPLOYED' } as const;
 const AlertSeverity = { LOW: 'LOW', MEDIUM: 'MEDIUM', HIGH: 'HIGH', CRITICAL: 'CRITICAL' } as const;
 
-const prisma = new PrismaClient();
+const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
+
 
 async function main() {
   console.log('🌱 Seeding Yatra IQ database...');

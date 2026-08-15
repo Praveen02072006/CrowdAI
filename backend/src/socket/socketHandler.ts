@@ -32,8 +32,23 @@ export function setupSocketIO(io: Server): void {
 }
 
 function startVehicleMovementEngine(io: Server): void {
-  // Broadcast vehicle positions every 5 seconds
-  setInterval(async () => {
+  let consecutiveFailures = 0;
+  const MAX_FAILURES = 3;
+  const BACKOFF_MS = 60_000; // 60 seconds backoff after circuit opens
+  let circuitOpen = false;
+  let circuitOpenedAt = 0;
+
+  async function tick() {
+    // Circuit breaker: if too many failures, wait before retrying
+    if (circuitOpen) {
+      const elapsed = Date.now() - circuitOpenedAt;
+      if (elapsed < BACKOFF_MS) return; // still in backoff, skip
+      // Try to recover
+      circuitOpen = false;
+      consecutiveFailures = 0;
+      console.log('🔄 Vehicle engine: retrying DB connection after backoff...');
+    }
+
     try {
       const vehicles = await prisma.vehicle.findMany({
         where: { status: { in: ['ACTIVE', 'DEPLOYED'] } },
@@ -42,6 +57,12 @@ function startVehicleMovementEngine(io: Server): void {
           locations: { orderBy: { timestamp: 'desc' }, take: 1 },
         },
       });
+
+      // Reset failure count on success
+      if (consecutiveFailures > 0) {
+        console.log('✅ Vehicle engine: DB connection restored.');
+        consecutiveFailures = 0;
+      }
 
       for (const vehicle of vehicles) {
         const currentLoc = vehicle.locations[0];
@@ -88,7 +109,18 @@ function startVehicleMovementEngine(io: Server): void {
         });
       }
     } catch (err) {
-      console.error('Vehicle movement engine error:', err);
+      consecutiveFailures++;
+      if (consecutiveFailures <= MAX_FAILURES) {
+        console.error(`Vehicle movement engine error (attempt ${consecutiveFailures}/${MAX_FAILURES}):`, (err as Error).message);
+      }
+      if (consecutiveFailures >= MAX_FAILURES && !circuitOpen) {
+        circuitOpen = true;
+        circuitOpenedAt = Date.now();
+        console.warn(`⚠️  Vehicle engine: DB unreachable after ${MAX_FAILURES} failures. Pausing for ${BACKOFF_MS / 1000}s before retrying.`);
+      }
     }
-  }, 5000);
+  }
+
+  // Broadcast vehicle positions every 5 seconds
+  setInterval(tick, 5000);
 }
